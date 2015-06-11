@@ -24,12 +24,6 @@ import java.util.Observable;
  * @version November 8, 2012
  * 
  * @author Ricky Dam
- * @version June 9, 2015
- * 
- * @author Ricky Dam
- * @version June 10, 2015
- * 
- * @author Ricky Dam
  * @version June 11, 2015
  */
 
