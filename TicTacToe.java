@@ -1,17 +1,10 @@
 import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.*;import java.awt.event.*;
 import javax.swing.*;
-import java.util.Observer;
-import java.util.Observable;
 
 /**
 
-// what needs to be a field and what doesn't
-// what does "extends JFrame" do
 // change the font of a shortcut key mask
-// why does actionPerfomed
-// what does "resetItem.addActionListener(this);" do
 // should the reset be for when the game is done or just whenever
 // subclass problem
 
@@ -52,15 +45,15 @@ public class TicTacToe implements ActionListener
       gameEnded = false;
       
       JFrame frame = new JFrame("Tic-Tac-Toe Interactive");      
-      int height = 500;
+      int height = 530;
       int width = 500;
       frame.setPreferredSize(new Dimension(width, height));
       
       Container contentPane = frame.getContentPane();
-      contentPane.setLayout(new GridLayout(2, 1)); // The number of panes
+      BorderLayout borderPane = new BorderLayout();
+      contentPane.setLayout(borderPane); // The number of panes
      
-      JPanel buttonPanel = new JPanel();
-      buttonPanel.setLayout(new GridLayout(3, 3)); // 3x3
+      JPanel buttonPanel = new JPanel();buttonPanel.setLayout(new GridLayout(3, 3)); // 3x3
       button = new JButton[3][3];
       for(int i=0; i<3; i++) { 
         for(int j=0; j<3; j++) { //initalizes all the buttons
@@ -72,7 +65,7 @@ public class TicTacToe implements ActionListener
         }
       }     
       
-      contentPane.add(buttonPanel);
+      contentPane.add(buttonPanel, BorderLayout.CENTER);
       
       // Menu bar
       JMenuBar menuBar = new JMenuBar();
@@ -82,11 +75,11 @@ public class TicTacToe implements ActionListener
       fileMenu.setFont(new Font(null, Font.BOLD, 20));
       menuBar.add(fileMenu);
       
-      resetItem = new JMenuItem("Reset");
+      resetItem = new JMenuItem("Reset (CTRL+R)");
       resetItem.setFont(new Font(null, Font.BOLD, 20));
       fileMenu.add(resetItem);
       
-      quitItem = new JMenuItem("Quit");
+      quitItem = new JMenuItem("Quit (CTRL+Q)");
       quitItem.setFont(new Font(null, Font.BOLD, 20));
       fileMenu.add(quitItem);
       
@@ -95,26 +88,24 @@ public class TicTacToe implements ActionListener
       quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
       
       resetItem.addActionListener(this);
-      quitItem.addActionListener(new ActionListener()
-      {
+      quitItem.addActionListener(this);//new ActionListener()
+      /*{
           public void actionPerformed(ActionEvent event)
           {
               System.exit(0);
           }
       }
-      );
+      );*/
       
       label = new JLabel();
-      label.setText("X Player's Turn");
+      label.setText(" X Player's Turn");
       label.setFont(new Font(null, Font.BOLD, 20));
-      contentPane.add(label);
+      contentPane.add(label, BorderLayout.SOUTH);
       
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // pressing the red x closes the game      
       frame.pack();
       frame.setResizable(true);
       frame.setVisible(true);      
-      
-      System.out.println("Game Started.");
    } 
    
    private void checkForWinner(int row, int col)
@@ -123,26 +114,19 @@ public class TicTacToe implements ActionListener
            if(button[row][0].getText().equals(button[row][1].getText()) &&
               button[row][1].getText().equals(button[row][2].getText())) {
                 gameEnded = true;
-                System.out.println(button[row][0].getText() + " wins!");
            }
            else if(button[0][col].getText().equals(button[1][col].getText()) &&
                    button[1][col].getText().equals(button[2][col].getText())) {
                 gameEnded = true;
-                System.out.println(button[0][col].getText() + " wins!");
            }               
            else if(button[0][0].getText().equals(button[1][1].getText()) &&
                    button[1][1].getText().equals(button[2][2].getText())) {
                 gameEnded = true;
-                System.out.println(button[0][0].getText() + " wins!");
            }
            else if(button[0][2].getText().equals(button[1][1].getText()) &&
                    button[1][1].getText().equals(button[2][0].getText())) {
                 gameEnded = true;
-                System.out.println(button[1][1].getText() + " wins!");
             }
-       }
-       else {
-           System.out.println("No winner yet.");
        }
    }
     
@@ -158,7 +142,7 @@ public class TicTacToe implements ActionListener
                             button[i][j].setEnabled(false);
                             turnCounter++;
                             checkForWinner(i, j);
-                            label.setText("O Player's Turn");
+                            label.setText(" O Player's Turn");
                             if(gameEnded) {
                                 disableAll();
                             }
@@ -174,7 +158,7 @@ public class TicTacToe implements ActionListener
                             button[i][j].setEnabled(false);
                             turnCounter++;
                             checkForWinner(i, j);
-                            label.setText("X Player's Turn");
+                            label.setText(" X Player's Turn");
                             if(gameEnded) {
                                 disableAll();
                             }
@@ -189,6 +173,9 @@ public class TicTacToe implements ActionListener
             if(element == resetItem) {
                 // the player chose to reset the game
                 clearEverything();            
+            }
+            else if (element == quitItem) {
+                System.exit(0);            
             }
         }
    }
